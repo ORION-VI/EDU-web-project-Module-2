@@ -29,11 +29,11 @@ public class User {
     private LocalDateTime createdAt;
 
     //Non-args конструктор, по просьбе Hibernate.
-    public User() {
+    protected User() {
     }
 
-    //Стандартный конструктор.
-    public User(String name, String email, int age) {
+    //Приватный стандартный конструктор.
+    private User(String name, String email, int age) {
         this.name = name;
         this.email = email;
         this.age = age;
@@ -62,5 +62,13 @@ public class User {
     }
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    //Метод для создания объекта User (инкапсуляция).
+    public static User buildUser(String name, String email, int age) {
+        return new User(name, email, age);
     }
 }
