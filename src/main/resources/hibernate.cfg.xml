@@ -1,0 +1,14 @@
+<hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
+    <session-factory>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres_web_edu</property>
+        <property name="hibernate.connection.username">postgresedu</property>
+        <property name="hibernate.connection.password">postgresEDU5432</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">false</property>
+        <property name="hibernate.use_sql_comments">true</property>
+        <mapping class="org.example.entity.User"/>
+    </session-factory>
+</hibernate-configuration>
