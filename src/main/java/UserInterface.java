@@ -8,8 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UserInterface {
     static void main(String[] args) throws InterruptedException {
-
-        //Блок инициализации + интерфейсная "шелуха" для красоты
         System.out.println("=".repeat(50));
         System.out.println("EDU PostgreSQL Database Interaction Interface v.0.1");
         System.out.println("=".repeat(50));
@@ -20,27 +18,21 @@ public class UserInterface {
         TimeUnit.SECONDS.sleep(2);
         System.out.print("...");
 
-        //Инициализируем сервис и сканнер
         Service service = new Service(new DataAccessObject(SessionFactoryProvider.getSessionFactory()));
         Scanner inputScanner = new Scanner(System.in);
 
-        //Еще интерфейсные штуки
         TimeUnit.SECONDS.sleep(1);
         System.out.print("....DONE!");
         System.out.println();
         System.out.println();
 
-        //Ввод логина интерфейса, тоже для "серьезности"
         System.out.println("LOGIN: ");
         String login = inputScanner.nextLine();
         System.out.println();
         System.out.println("WELCOME BACK, " + login);
         System.out.println("=".repeat(50));
 
-        //НАЧАЛО БЛОКА ЛОГИКИ ИНТЕРФЕЙСА
         while(true) {
-
-            //Главное меню
             System.out.println();
             System.out.println("MAIN MENU");
             System.out.println("-".repeat(10));
@@ -53,7 +45,6 @@ public class UserInterface {
             System.out.println("5. DELETE USER");
             System.out.println("6. EXIT");
 
-            //Валидация выбора
             if(!inputScanner.hasNextInt()) {
                 System.out.println("INVALID INPUT, SELECT A CORRESPONDING OPTION");
                 inputScanner.nextLine();
@@ -64,7 +55,6 @@ public class UserInterface {
             inputScanner.nextLine();
             switch(selection) {
 
-                //Создание нового пользователя
                 case 1:
                     System.out.println();
                     System.out.println("CREATING NEW USER");
@@ -84,7 +74,6 @@ public class UserInterface {
                     service.saveUser(newName, newEmail, newAge);
                     break;
 
-                //Поиск пользователя
                 case 2:
                     System.out.println();
                     System.out.println("FINDING USER BY ID");
@@ -105,7 +94,6 @@ public class UserInterface {
                     inputScanner.nextLine();
                     break;
 
-                //Получение информации по всем пользователям.
                 case 3:
                     System.out.println();
                     System.out.println("GETTING ALL USERS INFO");
@@ -121,7 +109,6 @@ public class UserInterface {
                     }
                     break;
 
-                //Обновление пользователя
                 case 4:
                     System.out.println();
                     System.out.println("UPDATING USER INFO");
@@ -149,7 +136,6 @@ public class UserInterface {
                     service.updateUser(updateId, updateName, updateEmail, updateAge);
                     break;
 
-                //Удаление пользователя
                 case 5:
                     System.out.println();
                     System.out.println("DELETING USER");
@@ -166,7 +152,6 @@ public class UserInterface {
                     inputScanner.nextLine();
                     break;
 
-                //Выход из программы
                 case 6:
                     System.out.println();
                     System.out.println("EXITING PROGRAM...");

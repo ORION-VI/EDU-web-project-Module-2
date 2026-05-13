@@ -7,7 +7,6 @@ public class InputValidator {
     public InputValidator() {
     }
 
-    //Валидация ID на null, 0 и негативное число.
     public boolean validateId(Long id) {
         if(id == null) {
             System.out.println("ERROR: ID cannot be empty!");
@@ -19,7 +18,6 @@ public class InputValidator {
         return true;
     }
 
-    //Валидация имени на null и пустоту.
     public boolean validateName(String name) {
         if(name == null || name.trim().isEmpty()) {
             System.out.println("ERROR: Name cannot be empty!");
@@ -28,9 +26,8 @@ public class InputValidator {
         return true;
     }
 
-    //Валидация email на null и соответствие.
     public boolean validateEmail(String email) {
-        if(email == null) {
+        if(email == null || email.trim().isEmpty()) {
             System.out.println("ERROR: Email cannot be empty!");
             return false;
         }
@@ -41,7 +38,6 @@ public class InputValidator {
         return true;
     }
 
-    //Валидация возраста на null и негативное число.
     public boolean validateAge(Integer age) {
         if(age == null) {
             System.out.println("ERROR: Age cannot be empty!");
@@ -54,7 +50,6 @@ public class InputValidator {
         return true;
     }
 
-    //Валидатор объекта User (например, если получаем через Json).
     public boolean validateUser(User user) {
         return validateName(user.getName()) && validateEmail(user.getEmail()) && validateAge(user.getAge());
     }
