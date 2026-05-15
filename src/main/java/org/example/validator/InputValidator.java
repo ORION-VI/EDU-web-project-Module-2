@@ -14,6 +14,7 @@ public class InputValidator {
         }
         if(id <= 0) {
             System.out.println("ERROR: ID cannot be 0 or less!");
+            return false;
         }
         return true;
     }
