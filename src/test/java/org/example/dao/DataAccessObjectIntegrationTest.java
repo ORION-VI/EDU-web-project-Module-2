@@ -12,9 +12,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.hibernate.cfg.Configuration;
-
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 public class DataAccessObjectIntegrationTest {
     @Container
-    private static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:16").withDatabaseName("test-postgres");;
+    private static final PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:16").withDatabaseName("test-postgres");
 
     private static SessionFactory testingSessionFactory;
     private static DataAccessObject testingDataAccessObject;
@@ -191,6 +188,6 @@ public class DataAccessObjectIntegrationTest {
     @AfterAll
     public static void shutdown() {
         if(testingSessionFactory != null) testingSessionFactory.close();
-        if(postgreSQLContainer.isRunning() && postgreSQLContainer != null) postgreSQLContainer.stop();
+        if(postgreSQLContainer.isRunning()) postgreSQLContainer.stop();
     }
 }
