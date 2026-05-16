@@ -14,12 +14,10 @@ public class DataAccessObject implements DataAccessInterface {
     private final SessionFactory sessionFactory;
     private static final Logger log = LoggerFactory.getLogger(DataAccessObject.class);
 
-    //Конструктор, передаем ссылку на SessionFactory.
     public DataAccessObject(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    //Метод транзакции на создание (сохранение) пользователя.
     @Override
     public boolean saveUser(User user) {
         Transaction transaction = null;
@@ -43,10 +41,6 @@ public class DataAccessObject implements DataAccessInterface {
         }
     }
 
-    /*
-    Метод обновления юзера в ДБ.
-    Проверяет каждое поле User на null (если null - значит обновление этого поля не требуется) и equals (не нужно обновлять одинаковое - операция лишняя).
-    */
     @Override
     public boolean updateUser(User user) {
         Transaction transaction = null;
@@ -73,7 +67,6 @@ public class DataAccessObject implements DataAccessInterface {
         }
     }
 
-    //Метод поиска пользователя по ID.
     @Override
     public User findUser(Long id) {
         try(Session session = sessionFactory.openSession()) {
@@ -90,7 +83,6 @@ public class DataAccessObject implements DataAccessInterface {
         }
     }
 
-    //Метод на поиск всех юзеров в базе.
     @Override
     public List<User> findAllUsers() {
         try(Session session = sessionFactory.openSession()) {

@@ -1,6 +1,6 @@
 <hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
     <session-factory>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres_web_edu</property>
         <property name="hibernate.connection.username">postgresedu</property>
