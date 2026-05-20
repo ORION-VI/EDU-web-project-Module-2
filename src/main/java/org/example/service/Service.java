@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.dao.DataAccessInterface;
 import org.example.entity.User;
 import org.example.validator.InputValidator;
+
 import java.util.List;
 
 public class Service implements ServiceInterface {
@@ -15,7 +16,7 @@ public class Service implements ServiceInterface {
 
     @Override
     public void saveUser(String name, String email, Integer age) {
-        if(inputValidator.validateName(name) && inputValidator.validateEmail(email) && inputValidator.validateAge(age)) {
+        if (inputValidator.validateName(name) && inputValidator.validateEmail(email) && inputValidator.validateAge(age)) {
             User user = User.buildUser(name, email, age);
             dataAccessObject.saveUser(user);
         }
@@ -23,7 +24,7 @@ public class Service implements ServiceInterface {
 
     @Override
     public void updateUser(Long id, String name, String email, Integer age) {
-        if(inputValidator.validateId(id) && inputValidator.validateName(name) && inputValidator.validateEmail(email) && inputValidator.validateAge(age)) {
+        if (inputValidator.validateId(id) && inputValidator.validateName(name) && inputValidator.validateEmail(email) && inputValidator.validateAge(age)) {
             User user = User.buildUser(name, email, age);
             user.setId(id);
             dataAccessObject.updateUser(user);
@@ -32,7 +33,7 @@ public class Service implements ServiceInterface {
 
     @Override
     public User findUser(Long id) {
-        if(inputValidator.validateId(id)) return dataAccessObject.findUser(id);
+        if (inputValidator.validateId(id)) return dataAccessObject.findUser(id);
         return null;
     }
 
@@ -43,6 +44,6 @@ public class Service implements ServiceInterface {
 
     @Override
     public void deleteUser(Long id) {
-        if(inputValidator.validateId(id)) dataAccessObject.deleteUser(id);
+        if (inputValidator.validateId(id)) dataAccessObject.deleteUser(id);
     }
 }

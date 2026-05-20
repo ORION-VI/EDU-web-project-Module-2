@@ -8,11 +8,11 @@ public class InputValidator {
     }
 
     public boolean validateId(Long id) {
-        if(id == null) {
+        if (id == null) {
             System.out.println("ERROR: ID cannot be empty!");
             return false;
         }
-        if(id <= 0) {
+        if (id <= 0) {
             System.out.println("ERROR: ID cannot be 0 or less!");
             return false;
         }
@@ -20,7 +20,7 @@ public class InputValidator {
     }
 
     public boolean validateName(String name) {
-        if(name == null || name.trim().isEmpty()) {
+        if (name == null || name.trim().isEmpty()) {
             System.out.println("ERROR: Name cannot be empty!");
             return false;
         }
@@ -28,11 +28,11 @@ public class InputValidator {
     }
 
     public boolean validateEmail(String email) {
-        if(email == null || email.trim().isEmpty()) {
+        if (email == null || email.trim().isEmpty()) {
             System.out.println("ERROR: Email cannot be empty!");
             return false;
         }
-        if(!email.contains("@") || !email.contains(".")) {
+        if (!email.contains("@") || !email.contains(".")) {
             System.out.println("ERROR: Email must contain @ symbol and domain!");
             return false;
         }
@@ -40,11 +40,11 @@ public class InputValidator {
     }
 
     public boolean validateAge(Integer age) {
-        if(age == null) {
+        if (age == null) {
             System.out.println("ERROR: Age cannot be empty!");
             return false;
         }
-        if(age < 0) {
+        if (age < 0) {
             System.out.println("ERROR: Age cannot be negative!");
             return false;
         }
