@@ -52,6 +52,7 @@ public class InputValidator {
     }
 
     public boolean validateUser(User user) {
+        if(user == null) return false;
         return validateName(user.getName()) && validateEmail(user.getEmail()) && validateAge(user.getAge());
     }
 }
