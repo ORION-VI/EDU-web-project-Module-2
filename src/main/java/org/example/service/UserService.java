@@ -22,34 +22,35 @@ public class UserService implements ServiceInterface {
     }
 
     @Override
-    public void saveUser(User newUser) {
+    public User saveUser(User newUser) {
         if (inputValidator.validateUser(newUser)) {
             userRepository.save(newUser);
-        }
-        else {
+            return newUser;
+        } else {
             logger.error("INVALID USER ERROR: Cannot save USER entity to the database");
             throw new RuntimeException();
         }
     }
 
     @Override
-    public void updateUser(Long id, User newUser) {
+    public User updateUser(Long id, User newUser) {
         if (inputValidator.validateId(id) && inputValidator.validateUser(newUser)) {
             Optional<User> userOptional = userRepository.findById(id);
-            if(userOptional.isPresent()) {
-                if(!userOptional.get().getName().equals(newUser.getName())) userOptional.get().setName(newUser.getName());
-                if(!userOptional.get().getEmail().equals(newUser.getEmail())) userOptional.get().setEmail(newUser.getEmail());
-                if(!userOptional.get().getAge().equals(newUser.getAge())) userOptional.get().setAge(newUser.getAge());
+            if (userOptional.isPresent()) {
+                if (!userOptional.get().getName().equals(newUser.getName()))
+                    userOptional.get().setName(newUser.getName());
+                if (!userOptional.get().getEmail().equals(newUser.getEmail()))
+                    userOptional.get().setEmail(newUser.getEmail());
+                if (!userOptional.get().getAge().equals(newUser.getAge())) userOptional.get().setAge(newUser.getAge());
                 userRepository.save(userOptional.get());
-            }
-            else {
+                return userOptional.get();
+            } else {
                 logger.error("USER NOT FOUND ERROR: User ID {} not found", id);
                 throw new RuntimeException();
             }
-        }
-        else {
+        } else {
             logger.error("INVALID USER ERROR: Cannot update USER entity in the database");
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -62,34 +63,29 @@ public class UserService implements ServiceInterface {
                 logger.error("USER NOT FOUND ERROR: User ID {} not found", id);
                 throw new RuntimeException();
             }
-        }
-        else {
+        } else {
             logger.error("INVALID ID ERROR: User ID {} is not valid", id);
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         }
     }
 
     @Override
     public List<User> findAllUsers() {
-        List<User> userList = userRepository.findAll();
-        if(!userList.isEmpty()) return userList;
-        else {
-            logger.error("EMPTY DATABASE ERROR: Users database is empty");
-            throw new RuntimeException();
-        }
+        return userRepository.findAll();
     }
 
     @Override
     public void deleteUser(Long id) {
         if (inputValidator.validateId(id)) {
-            if(userRepository.findById(id).isPresent()) userRepository.deleteById(id);
-            else {
+            if (userRepository.findById(id).isPresent()) {
+                userRepository.deleteById(id);
+            } else {
                 logger.error("USER NOT FOUND ERROR: User ID {} not found", id);
+                throw new RuntimeException();
             }
-        }
-        else {
+        } else {
             logger.error("INVALID ID ERROR: User ID {} is not valid", id);
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         }
     }
 }

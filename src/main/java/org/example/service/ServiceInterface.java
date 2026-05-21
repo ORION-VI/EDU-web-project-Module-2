@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ServiceInterface {
 
-    void saveUser(User user);
+    User saveUser(User user);
 
-    void updateUser(Long id, User user);
+    User updateUser(Long id, User user);
 
     User findUser(Long id);
 
