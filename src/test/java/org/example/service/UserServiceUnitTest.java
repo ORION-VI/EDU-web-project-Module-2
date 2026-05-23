@@ -5,10 +5,10 @@ import org.example.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ch.qos.logback.classic.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +116,11 @@ public class UserServiceUnitTest {
 
     @Test
     public void deleteUser_whenValidId_isOk() {
+        User testUser = User.buildUser(name, email, age);
+        testUser.setId(id);
+        when(userRepositoryMock.findById(id)).thenReturn(Optional.of(testUser));
         userServiceTest.deleteUser(id);
+        verify(userRepositoryMock).findById(id);
         verify(userRepositoryMock).deleteById(id);
     }
 

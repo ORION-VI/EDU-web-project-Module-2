@@ -4,6 +4,7 @@ import org.example.dto.UserDto;
 import org.example.dto.UserMapper;
 import org.example.entity.User;
 import org.example.service.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +46,13 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         try {
             User savedUser = userService.saveUser(userMapper.toEntity(userDto));
-            URI savedUserUri = URI.create("/api/users" + savedUser.getId());
+            URI savedUserUri = URI.create("/api/users/" + savedUser.getId());
             return ResponseEntity.created(savedUserUri).body(userMapper.toDto(savedUser));
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO CREATE NEW USER");
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "PROVIDED EMAIL ALREADY EXISTS");
         }
     }
 

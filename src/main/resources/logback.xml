@@ -1,11 +1,11 @@
 <configuration>
     <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} -%kvp- %msg %n</pattern>
-        </encoder>
-    </appender>
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%-4relative [%thread] %-5level %logger{35} -%kvp- %msg %n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
 
     <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
 
@@ -25,6 +25,5 @@
     <logger name="org.hibernate" level="WARN"/>
     <logger name="org.hibernate.SQL" level="WARN"/>
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="WARN"/>
-
     <logger name="org.example" level="INFO"/>
 </configuration>

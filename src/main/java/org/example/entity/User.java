@@ -88,8 +88,7 @@ public class User {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object instanceof User user) {
-            return (this.getId().equals(user.getId())) &&
-                    (this.getName().equals(user.getName())) &&
+            return (this.getName().equals(user.getName())) &&
                     (this.getEmail().equals(user.getEmail())) &&
                     (this.getAge().equals(user.getAge()));
         }

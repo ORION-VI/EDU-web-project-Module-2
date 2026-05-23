@@ -1,6 +1,7 @@
 package org.example.service;
 
-import ch.qos.logback.classic.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.transaction.Transactional;
 import org.example.dao.UserRepository;
 import org.example.entity.User;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class UserService implements ServiceInterface {
     private UserRepository userRepository;
     private static final InputValidator inputValidator = new InputValidator();
-    private Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -28,7 +29,7 @@ public class UserService implements ServiceInterface {
             return newUser;
         } else {
             logger.error("INVALID USER ERROR: Cannot save USER entity to the database");
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         }
     }
 
