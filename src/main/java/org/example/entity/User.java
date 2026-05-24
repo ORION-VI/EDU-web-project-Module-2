@@ -2,6 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,26 +38,35 @@ public class User {
     public void setAge(Integer age) {
         this.age = age;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    public void setId(Long id) { this.id = id; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
+
     public Integer getAge() {
         return age;
     }
+
     public String getEmail() {
         return email;
     }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public Long getId() {
         return id;
     }
@@ -76,12 +86,11 @@ public class User {
 
     @Override
     public boolean equals(Object object) {
-        if(this == object) return true;
-        if(object instanceof User user) {
-            return (this.getId().equals(user.getId())) &&
-                   (this.getName().equals(user.getName())) &&
-                   (this.getEmail().equals(user.getEmail())) &&
-                   (this.getAge().equals(user.getAge()));
+        if (this == object) return true;
+        if (object instanceof User user) {
+            return (this.getName().equals(user.getName())) &&
+                    (this.getEmail().equals(user.getEmail())) &&
+                    (this.getAge().equals(user.getAge()));
         }
         return false;
     }

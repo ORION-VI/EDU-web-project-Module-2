@@ -1,13 +1,14 @@
 package org.example.service;
 
 import org.example.entity.User;
+
 import java.util.List;
 
 public interface ServiceInterface {
 
-    void saveUser(String name, String email, Integer age);
+    User saveUser(User user);
 
-    void updateUser(Long id, String name, String email, Integer age);
+    User updateUser(Long id, User user);
 
     User findUser(Long id);
 
