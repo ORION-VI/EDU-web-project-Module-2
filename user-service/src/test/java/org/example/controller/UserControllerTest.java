@@ -1,6 +1,5 @@
 package org.example.controller;
 
-import org.example.AppExecutable;
 import org.example.dto.UserMapper;
 import org.example.entity.User;
 import org.example.service.UserService;
