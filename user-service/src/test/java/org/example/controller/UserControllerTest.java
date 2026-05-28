@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import org.example.dto.UserMapper;
+import org.example.mapper.UserMapper;
 import org.example.entity.User;
 import org.example.service.UserService;
 import org.junit.jupiter.api.Test;

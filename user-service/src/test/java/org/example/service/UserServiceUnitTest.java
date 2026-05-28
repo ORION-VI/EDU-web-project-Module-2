@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.dao.UserRepository;
 import org.example.entity.User;
+import org.example.event.UserEventProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,9 @@ public class UserServiceUnitTest {
 
     @Mock
     private UserRepository userRepositoryMock;
+
+    @Mock
+    private UserEventProducer userEventProducerMock;
 
     @InjectMocks
     private UserService userServiceTest;
@@ -67,6 +71,7 @@ public class UserServiceUnitTest {
         when(userRepositoryMock.save(testUser)).thenReturn(testUser);
         User savedUser = userServiceTest.saveUser(testUser);
         verify(userRepositoryMock).save(testUser);
+        verify(userEventProducerMock).sendEvent("USER_CREATED", savedUser.getName(), savedUser.getEmail());
         assertEquals(testUser, savedUser);
     }
 
@@ -75,6 +80,7 @@ public class UserServiceUnitTest {
         User testUser = User.buildUser(null, "testest.com", -5);
         assertThrowsExactly(IllegalArgumentException.class, () -> userServiceTest.saveUser(testUser));
         verify(userRepositoryMock, never()).save(any());
+        verify(userEventProducerMock, never()).sendEvent(any(),any(),any());
     }
 
     @Test
@@ -122,6 +128,7 @@ public class UserServiceUnitTest {
         userServiceTest.deleteUser(id);
         verify(userRepositoryMock).findById(id);
         verify(userRepositoryMock).deleteById(id);
+        verify(userEventProducerMock).sendEvent("USER_DELETED", name, email);
     }
 
     @Test
@@ -129,6 +136,7 @@ public class UserServiceUnitTest {
         assertThrowsExactly(IllegalArgumentException.class, () -> userServiceTest.deleteUser(-1L));
         verify(userRepositoryMock, never()).findById(id);
         verify(userRepositoryMock, never()).deleteById(any());
+        verify(userEventProducerMock, never()).sendEvent(any(), any(), any());
     }
 
     @Test
@@ -137,6 +145,7 @@ public class UserServiceUnitTest {
         assertThrowsExactly(RuntimeException.class, () -> userServiceTest.deleteUser(id));
         verify(userRepositoryMock).findById(id);
         verify(userRepositoryMock, never()).deleteById(id);
+        verify(userEventProducerMock, never()).sendEvent(any(), any(), any());
     }
 
     @Test

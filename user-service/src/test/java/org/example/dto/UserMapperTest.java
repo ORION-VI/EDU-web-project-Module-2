@@ -1,6 +1,7 @@
 package org.example.dto;
 
 import org.example.entity.User;
+import org.example.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +22,7 @@ public class UserMapperTest {
 
     @Test
     public void toEntity_returnsUser() {
-        UserDto testUserDto = new UserDto(1L, "Test", "test@test.com", 25);
+        UserDto testUserDto = UserDto.buildUserDto(1L, "Test", "test@test.com", 25);
         User testUser = userMapperTest.toEntity(testUserDto);
         assertNotNull(testUser);
         assertEquals(testUser.getName(), testUserDto.getName());

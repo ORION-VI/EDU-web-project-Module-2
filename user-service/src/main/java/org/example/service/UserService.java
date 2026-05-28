@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.event.UserEventProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import jakarta.transaction.Transactional;
@@ -15,17 +16,20 @@ import java.util.Optional;
 @Transactional
 public class UserService implements ServiceInterface {
     private UserRepository userRepository;
+    private UserEventProducer userEventProducer;
     private static final InputValidator inputValidator = new InputValidator();
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserEventProducer userEventProducer) {
         this.userRepository = userRepository;
+        this.userEventProducer = userEventProducer;
     }
 
     @Override
     public User saveUser(User newUser) {
         if (inputValidator.validateUser(newUser)) {
             userRepository.save(newUser);
+            userEventProducer.sendEvent("USER_CREATED", newUser.getName(), newUser.getEmail());
             return newUser;
         } else {
             logger.error("INVALID USER ERROR: Cannot save USER entity to the database");
@@ -78,8 +82,11 @@ public class UserService implements ServiceInterface {
     @Override
     public void deleteUser(Long id) {
         if (inputValidator.validateId(id)) {
-            if (userRepository.findById(id).isPresent()) {
+            Optional<User> userOptional = userRepository.findById(id);
+            if (userOptional.isPresent()) {
+                User deletedUser = userOptional.get();
                 userRepository.deleteById(id);
+                userEventProducer.sendEvent("USER_DELETED", deletedUser.getName(), deletedUser.getEmail());
             } else {
                 logger.error("USER NOT FOUND ERROR: User ID {} not found", id);
                 throw new RuntimeException();

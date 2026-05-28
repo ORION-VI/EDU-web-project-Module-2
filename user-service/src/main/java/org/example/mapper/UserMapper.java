@@ -1,5 +1,6 @@
-package org.example.dto;
+package org.example.mapper;
 
+import org.example.dto.UserDto;
 import org.example.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +9,7 @@ public class UserMapper implements DtoMapperInterface<UserDto, User> {
 
     @Override
     public UserDto toDto(User object) {
-        return new UserDto(object.getId(), object.getName(), object.getEmail(), object.getAge());
+        return UserDto.buildUserDto(object.getId(), object.getName(), object.getEmail(), object.getAge());
     }
 
     @Override
