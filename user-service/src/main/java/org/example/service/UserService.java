@@ -29,7 +29,7 @@ public class UserService implements ServiceInterface {
     public User saveUser(User newUser) {
         if (inputValidator.validateUser(newUser)) {
             userRepository.save(newUser);
-            userEventProducer.sendEvent("USER_CREATED", newUser.getName(), newUser.getEmail());
+            userEventProducer.sendEvent("CREATED", newUser.getName(), newUser.getEmail());
             return newUser;
         } else {
             logger.error("INVALID USER ERROR: Cannot save USER entity to the database");
@@ -86,7 +86,7 @@ public class UserService implements ServiceInterface {
             if (userOptional.isPresent()) {
                 User deletedUser = userOptional.get();
                 userRepository.deleteById(id);
-                userEventProducer.sendEvent("USER_DELETED", deletedUser.getName(), deletedUser.getEmail());
+                userEventProducer.sendEvent("DELETED", deletedUser.getName(), deletedUser.getEmail());
             } else {
                 logger.error("USER NOT FOUND ERROR: User ID {} not found", id);
                 throw new RuntimeException();
