@@ -71,7 +71,7 @@ public class UserServiceUnitTest {
         when(userRepositoryMock.save(testUser)).thenReturn(testUser);
         User savedUser = userServiceTest.saveUser(testUser);
         verify(userRepositoryMock).save(testUser);
-        verify(userEventProducerMock).sendEvent("USER_CREATED", savedUser.getName(), savedUser.getEmail());
+        verify(userEventProducerMock).sendEvent("CREATED", savedUser.getName(), savedUser.getEmail());
         assertEquals(testUser, savedUser);
     }
 
@@ -128,7 +128,7 @@ public class UserServiceUnitTest {
         userServiceTest.deleteUser(id);
         verify(userRepositoryMock).findById(id);
         verify(userRepositoryMock).deleteById(id);
-        verify(userEventProducerMock).sendEvent("USER_DELETED", name, email);
+        verify(userEventProducerMock).sendEvent("DELETED", name, email);
     }
 
     @Test

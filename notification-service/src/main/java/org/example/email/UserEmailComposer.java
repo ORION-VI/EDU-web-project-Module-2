@@ -1,7 +1,9 @@
 package org.example.email;
 
 import org.example.dto.UserEventDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserEmailComposer implements EmailComposerInterface<UserEventDto> {
 
     public UserEmailComposer() {
