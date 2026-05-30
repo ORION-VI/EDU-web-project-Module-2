@@ -53,7 +53,7 @@ public class UserEventProducerTest {
         );
         JacksonJsonDeserializer<UserEventDto> jsonDeserializer = new JacksonJsonDeserializer<>();
         jsonDeserializer.addTrustedPackages("*");
-        consumerTest = new DefaultKafkaConsumerFactory<String, UserEventDto>
+        consumerTest = new DefaultKafkaConsumerFactory<>
                 (properties, new StringDeserializer(), jsonDeserializer).createConsumer();
         consumerTest.subscribe(List.of("user-events-test"));
     }
