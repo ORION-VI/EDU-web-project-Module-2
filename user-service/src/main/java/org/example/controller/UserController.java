@@ -1,10 +1,14 @@
 package org.example.controller;
 
-import org.example.dto.UserDto;
+import org.example.dto.UserRequestDto;
+import org.example.dto.UserResponseDto;
 import org.example.mapper.UserMapper;
 import org.example.entity.User;
 import org.example.service.UserService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,10 +32,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<UserResponseDto>> getUserById(@PathVariable Long id) {
         try {
             User user = userService.findUser(id);
-            return ResponseEntity.ok().body(userMapper.toDto(user));
+            EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(user),
+                    linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel(),
+                    linkTo(methodOn(UserController.class).getUsers()).withRel("list_of_all_users"),
+                    linkTo(methodOn(UserController.class).deleteUser(id)).withRel("delete_user"),
+                    linkTo(methodOn(UserController.class).updateUser(id, UserRequestDto.buildUserDto(null, null, null))).withRel("update_user"));
+            return ResponseEntity.ok().body(entityModel);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "INVALID USER ID");
         } catch (RuntimeException e) {
@@ -37,17 +49,24 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getUsers() {
-        List<User> userList = userService.findAllUsers();
-        return ResponseEntity.ok().body(userList.stream().map(userMapper::toDto).toList());
+    public ResponseEntity<CollectionModel<UserResponseDto>> getUsers() {
+        List<UserResponseDto> userList = userService.findAllUsers().stream().map(userMapper::toDto).toList();
+        CollectionModel<UserResponseDto> collectionModel = CollectionModel.of(userList,
+                linkTo(methodOn(UserController.class).getUsers()).withSelfRel(),
+                Link.of("/api/users/{id}", "find_user_by_id"),
+                linkTo(methodOn(UserController.class).createUser(UserRequestDto.buildUserDto(null, null, null))).withRel("create_new_user"));
+        return ResponseEntity.ok().body(collectionModel);
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<EntityModel<UserResponseDto>> createUser(@RequestBody UserRequestDto userDto) {
         try {
             User savedUser = userService.saveUser(userMapper.toEntity(userDto));
             URI savedUserUri = URI.create("/api/users/" + savedUser.getId());
-            return ResponseEntity.created(savedUserUri).body(userMapper.toDto(savedUser));
+            EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(savedUser),
+                    linkTo(methodOn(UserController.class).getUserById(savedUser.getId())).withSelfRel(),
+                    linkTo(methodOn(UserController.class).getUsers()).withRel("list_of_all_users"));
+            return ResponseEntity.created(savedUserUri).body(entityModel);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO CREATE NEW USER");
         }
@@ -57,10 +76,14 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<EntityModel<UserResponseDto>> updateUser(@PathVariable Long id, @RequestBody UserRequestDto userDto) {
         try {
             User updatedUser = userService.updateUser(id, userMapper.toEntity(userDto));
-            return ResponseEntity.ok(userMapper.toDto(updatedUser));
+            EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(updatedUser),
+                    linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel(),
+                    Link.of("/api/users/{id}", "find_user_by_id"),
+                    linkTo(methodOn(UserController.class).getUsers()).withRel("list_of_all_users"));
+            return ResponseEntity.ok(entityModel);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO UPDATE USER");
         } catch (RuntimeException e) {
@@ -69,10 +92,10 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         try {
             userService.deleteUser(id);
-            return ResponseEntity.ok("USER SUCCESSFULLY DELETED");
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO DELETE USER");
         } catch (RuntimeException e) {

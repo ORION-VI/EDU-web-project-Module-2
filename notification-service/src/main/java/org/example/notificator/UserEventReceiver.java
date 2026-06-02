@@ -20,7 +20,7 @@ public class UserEventReceiver {
     @KafkaListener(id = "notification-service-receiver",
             topics = "user-events",
             groupId = "notification-service-group")
-    public void sendEmailAuto(@Valid UserEventDto userEventDto) {
+    public void sendEmailAuto(UserEventDto userEventDto) {
         logger.info("MESSAGE (EVENT: {}, USERNAME: {}, EMAIL: {}) RECEIVED",
                 userEventDto.getEvent(), userEventDto.getUserName(), userEventDto.getUserEmail());
         userEmailService.sendEmailByEvent(userEventDto);

@@ -24,10 +24,10 @@ public class UserEventProducer {
         UserEventDto userEventDto = UserEventDto.buildUserEventDto(event, name, email);
         try {
             kafkaTemplate.send(topicName, email, userEventDto);
+            logger.info("MESSAGE (EVENT: {}, USERNAME: {}, USER EMAIL: {}) WAS SENT", event, name, email);
         } catch (Exception e) {
             logger.error("FAILED TO SEND MESSAGE (EVENT: {}, USERNAME: {}, USER EMAIL: {}) TO KAFKA: {}",
                     event, name, email, e.getMessage());
         }
-        logger.info("MESSAGE (EVENT: {}, USERNAME: {}, USER EMAIL: {}) WAS SENT", event, name, email);
     }
 }

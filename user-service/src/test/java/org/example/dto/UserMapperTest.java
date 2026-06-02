@@ -13,7 +13,7 @@ public class UserMapperTest {
     @Test
     public void toDto_returnsUserDto() {
         User testUser = User.buildUser("Test", "test@test.com", 25);
-        UserDto testUserDto = userMapperTest.toDto(testUser);
+        UserResponseDto testUserDto = userMapperTest.toDto(testUser);
         assertNotNull(testUserDto);
         assertEquals(testUser.getName(), testUserDto.getName());
         assertEquals(testUser.getEmail(), testUserDto.getEmail());
@@ -22,7 +22,7 @@ public class UserMapperTest {
 
     @Test
     public void toEntity_returnsUser() {
-        UserDto testUserDto = UserDto.buildUserDto(1L, "Test", "test@test.com", 25);
+        UserRequestDto testUserDto = UserRequestDto.buildUserDto("Test", "test@test.com", 25);
         User testUser = userMapperTest.toEntity(testUserDto);
         assertNotNull(testUser);
         assertEquals(testUser.getName(), testUserDto.getName());
