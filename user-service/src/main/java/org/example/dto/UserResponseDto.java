@@ -2,11 +2,20 @@ package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class UserResponseDto {
+
+    @Schema(description = "Digit ID value of a user", example = "202")
     private final Long id;
+
+    @Schema(description = "Name of a user", example = "Jack")
     private final String name;
+
+    @Schema(description = "Email of a user", example = "wahoo@inbox.com")
     private final String email;
+
+    @Schema(description = "Age of a user", example = "32")
     private final Integer age;
 
     private UserResponseDto(Long id, String name, String email, Integer age) {
