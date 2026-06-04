@@ -10,7 +10,6 @@ import org.example.dto.EmailRequestDto;
 import org.example.service.EmailServiceInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/notifications")
 public class UserNotificationController {
-    private EmailServiceInterface userEmailService;
+    private final EmailServiceInterface userEmailService;
     private final static Logger logger = LoggerFactory.getLogger(UserNotificationController.class);
 
     public UserNotificationController(EmailServiceInterface userEmailService) {
@@ -35,7 +34,7 @@ public class UserNotificationController {
     @ApiResponse(responseCode = "500", description = "Failed to send an email because something happened")
     @ApiResponse(responseCode = "400", description = "Failed to send an email because provided parameters are invalid")
     @PostMapping("/email")
-    public ResponseEntity<String> sendEmailManually(@ParameterObject @Valid @RequestBody EmailRequestDto emailRequest) {
+    public ResponseEntity<String> sendEmailManually(@Valid @RequestBody EmailRequestDto emailRequest) {
         logger.info("EMAIL SEND REQUEST RECEIVED WITH EMAIL: {}, SUBJECT: {}, BODY: {}",
                 emailRequest.getEmail(), emailRequest.getSubject(), emailRequest.getBody());
         try {

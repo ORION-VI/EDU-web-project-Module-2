@@ -15,8 +15,8 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserService implements ServiceInterface {
-    private UserRepository userRepository;
-    private UserEventProducer userEventProducer;
+    private final UserRepository userRepository;
+    private final UserEventProducer userEventProducer;
     private static final InputValidator inputValidator = new InputValidator();
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserEmailComposerTest {
 
-    private UserEmailComposer userEmailComposerTest = new UserEmailComposer();
+    private final UserEmailComposer userEmailComposerTest = new UserEmailComposer();
 
     @Test
     public void composeByEvent_whenUserCreated_returnsEmailObject() {

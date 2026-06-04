@@ -12,7 +12,6 @@ import org.example.dto.UserResponseDto;
 import org.example.mapper.UserMapper;
 import org.example.entity.User;
 import org.example.service.UserService;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -81,7 +80,7 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "Failed to create a new user, possibly due to invalid provided parameters")
     @ApiResponse(responseCode = "409", description = "Failed to create a new user because user with provided email already exists")
     @PostMapping
-    public ResponseEntity<EntityModel<UserResponseDto>> createUser(@ParameterObject @RequestBody UserRequestDto userDto) {
+    public ResponseEntity<EntityModel<UserResponseDto>> createUser(@RequestBody UserRequestDto userDto) {
         try {
             User savedUser = userService.saveUser(userMapper.toEntity(userDto));
             URI savedUserUri = URI.create("/api/users/" + savedUser.getId());
@@ -103,7 +102,7 @@ public class UserController {
     @ApiResponse(responseCode = "404", description = "Failed to update user because user with provided ID has not been found")
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<UserResponseDto>> updateUser(@Parameter(description = "Digit ID value of existing user", example = "202")
-                                                                   @PathVariable Long id, @ParameterObject @RequestBody UserRequestDto userDto) {
+                                                                   @PathVariable Long id, @RequestBody UserRequestDto userDto) {
         try {
             User updatedUser = userService.updateUser(id, userMapper.toEntity(userDto));
             EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(updatedUser),

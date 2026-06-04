@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(UserEventReceiver.class);
-    private EmailServiceInterface userEmailService;
+    private final EmailServiceInterface userEmailService;
 
     public UserEventReceiver(EmailServiceInterface userEmailService) {
         this.userEmailService = userEmailService;
