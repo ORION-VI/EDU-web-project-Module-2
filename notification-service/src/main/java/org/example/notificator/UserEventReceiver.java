@@ -1,6 +1,5 @@
 package org.example.notificator;
 
-import jakarta.validation.Valid;
 import org.example.dto.UserEventDto;
 import org.example.service.EmailServiceInterface;
 import org.slf4j.Logger;
