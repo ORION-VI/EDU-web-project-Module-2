@@ -15,8 +15,8 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserService implements ServiceInterface {
-    private UserRepository userRepository;
-    private UserEventProducer userEventProducer;
+    private final UserRepository userRepository;
+    private final UserEventProducer userEventProducer;
     private static final InputValidator inputValidator = new InputValidator();
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -28,9 +28,9 @@ public class UserService implements ServiceInterface {
     @Override
     public User saveUser(User newUser) {
         if (inputValidator.validateUser(newUser)) {
-            userRepository.save(newUser);
-            userEventProducer.sendEvent("CREATED", newUser.getName(), newUser.getEmail());
-            return newUser;
+            User createdUser = userRepository.save(newUser);
+            userEventProducer.sendEvent("CREATED", createdUser.getName(), createdUser.getEmail());
+            return createdUser;
         } else {
             logger.error("INVALID USER ERROR: Cannot save USER entity to the database");
             throw new IllegalArgumentException();

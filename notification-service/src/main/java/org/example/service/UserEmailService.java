@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserEmailService implements EmailServiceInterface {
     private static final Logger logger = LoggerFactory.getLogger(UserEmailService.class);
-    private EmailComposerInterface<UserEventDto> userEmailComposer;
-    private EmailSender emailSender;
+    private final EmailComposerInterface<UserEventDto> userEmailComposer;
+    private final EmailSender emailSender;
 
     public UserEmailService(EmailSender emailSender, EmailComposerInterface<UserEventDto> userEmailComposer) {
         this.emailSender = emailSender;

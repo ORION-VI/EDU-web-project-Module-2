@@ -160,7 +160,7 @@ public class UserControllerTest {
     @Test
     public void deleteUser_whenOk_okResponse() throws Exception {
         mockMvc.perform(delete("/api/users/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

@@ -1,5 +1,10 @@
 package org.example.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.dto.EmailRequestDto;
 import org.example.service.EmailServiceInterface;
@@ -12,16 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Notifications", description = "API endpoints to send messages and notifications")
 @RestController
 @RequestMapping("/api/notifications")
 public class UserNotificationController {
-    private EmailServiceInterface userEmailService;
+    private final EmailServiceInterface userEmailService;
     private final static Logger logger = LoggerFactory.getLogger(UserNotificationController.class);
 
     public UserNotificationController(EmailServiceInterface userEmailService) {
         this.userEmailService = userEmailService;
     }
 
+    @Operation(summary = "Send an email", description = "Sends and email using provided email address, subject and message body")
+    @ApiResponse(responseCode = "200", description = "Email was sent successfully",
+    content = @Content(schema = @Schema(implementation = String.class, example = "Email sending was successful!")))
+    @ApiResponse(responseCode = "500", description = "Failed to send an email because something happened")
+    @ApiResponse(responseCode = "400", description = "Failed to send an email because provided parameters are invalid")
     @PostMapping("/email")
     public ResponseEntity<String> sendEmailManually(@Valid @RequestBody EmailRequestDto emailRequest) {
         logger.info("EMAIL SEND REQUEST RECEIVED WITH EMAIL: {}, SUBJECT: {}, BODY: {}",

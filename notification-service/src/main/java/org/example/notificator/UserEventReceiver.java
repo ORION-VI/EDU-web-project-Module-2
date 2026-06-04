@@ -1,6 +1,5 @@
 package org.example.notificator;
 
-import jakarta.validation.Valid;
 import org.example.dto.UserEventDto;
 import org.example.service.EmailServiceInterface;
 import org.slf4j.Logger;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserEventReceiver {
     private static final Logger logger = LoggerFactory.getLogger(UserEventReceiver.class);
-    private EmailServiceInterface userEmailService;
+    private final EmailServiceInterface userEmailService;
 
     public UserEventReceiver(EmailServiceInterface userEmailService) {
         this.userEmailService = userEmailService;
@@ -20,7 +19,7 @@ public class UserEventReceiver {
     @KafkaListener(id = "notification-service-receiver",
             topics = "user-events",
             groupId = "notification-service-group")
-    public void sendEmailAuto(@Valid UserEventDto userEventDto) {
+    public void sendEmailAuto(UserEventDto userEventDto) {
         logger.info("MESSAGE (EVENT: {}, USERNAME: {}, EMAIL: {}) RECEIVED",
                 userEventDto.getEvent(), userEventDto.getUserName(), userEventDto.getUserEmail());
         userEmailService.sendEmailByEvent(userEventDto);

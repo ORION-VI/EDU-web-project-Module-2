@@ -1,8 +1,8 @@
 package org.example.email;
 
 public class Email {
-    private String subject;
-    private String body;
+    private final String subject;
+    private final String body;
 
     public Email(String subject, String body) {
         this.subject = subject;
@@ -15,13 +15,5 @@ public class Email {
 
     public String getBody() {
         return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
     }
 }
