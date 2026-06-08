@@ -1,0 +1,41 @@
+spring:
+  kafka:
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      auto-offset-reset: earliest
+      group-id: notification-service-group
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+
+    bootstrap-servers: localhost:9092
+
+  mail:
+    host: localhost
+    port: 1025
+    protocol: SMTP
+    properties:
+      mail:
+        from: noreply@webedu.com
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+  application:
+    name: notification-service
+
+server:
+  port: 8081
+
+eureka:
+  instance:
+    hostname: service-discovery
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
