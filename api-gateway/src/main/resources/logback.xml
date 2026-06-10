@@ -4,7 +4,7 @@
     <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>notification-service-log.txt</file>
+        <file>api-gateway-log.txt</file>
         <append>false</append>
         <immediateFlush>true</immediateFlush>
         <encoder>
@@ -18,5 +18,4 @@
 
     <logger name="org.example" level="INFO"/>
     <logger name="org.springframework.web" level="WARN"/>
-    <logger name="org.springframework.kafka" level="WARN"/>
 </configuration>
