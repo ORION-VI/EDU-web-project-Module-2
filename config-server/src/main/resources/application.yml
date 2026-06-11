@@ -8,6 +8,13 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/ORION-VI/EDU-web-project-Module-2
+          uri: https://github.com/ORION-VI/EDU-web-project-Module-2.git
           default-label: main
           searchPaths: config
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
