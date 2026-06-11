@@ -1,5 +1,6 @@
 spring:
   kafka:
+    bootstrap-servers: localhost:9092
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
@@ -10,9 +11,6 @@ spring:
           json:
             trusted:
               packages: "*"
-
-    bootstrap-servers: localhost:9092
-
   mail:
     host: localhost
     port: 1025
@@ -24,9 +22,6 @@ spring:
           auth: false
           starttls:
             enable: false
-
-  application:
-    name: notification-service
 
 server:
   port: 8081

@@ -9,8 +9,6 @@ server:
   port: 8080
 
 spring:
-  application:
-    name: api-gateway
   cloud:
     gateway:
       server:
@@ -52,7 +50,6 @@ resilience4j:
         baseConfig: default
       notification-service-cb:
         baseConfig: default
-
   timelimiter:
     instances:
       user-service-cb:
