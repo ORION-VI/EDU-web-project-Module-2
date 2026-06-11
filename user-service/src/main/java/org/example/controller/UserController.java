@@ -34,6 +34,11 @@ public class UserController {
     private final UserMapper userMapper;
     private final UserService userService;
 
+    private final String ID_DESCRIPTION = "Digit ID value of a user to find";
+    private final String LIST_OF_ALL_USERS_DESC = "list_of_all_users";
+    private final String USER_NOT_FOUND_DESC = "USER NOT FOUND";
+    private final String FIND_USER_BY_ID_DESC = "find_user_by_id";
+
     public UserController(UserMapper userMapper, UserService userService) {
         this.userMapper = userMapper;
         this.userService = userService;
@@ -45,19 +50,19 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "API user provided invalid ID to API method")
     @ApiResponse(responseCode = "404", description = "User with provided ID has not been found")
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<UserResponseDto>> getUserById(@Parameter(description = "Digit ID value of a user to find", example = "202") @PathVariable Long id) {
+    public ResponseEntity<EntityModel<UserResponseDto>> getUserById(@Parameter(description = ID_DESCRIPTION, example = "202") @PathVariable Long id) {
         try {
             User user = userService.findUser(id);
             EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(user),
                     linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel(),
-                    linkTo(methodOn(UserController.class).getUsers()).withRel("list_of_all_users"),
+                    linkTo(methodOn(UserController.class).getUsers()).withRel(LIST_OF_ALL_USERS_DESC),
                     linkTo(methodOn(UserController.class).deleteUser(id)).withRel("delete_user"),
                     linkTo(methodOn(UserController.class).updateUser(id, UserRequestDto.buildUserDto(null, null, null))).withRel("update_user"));
             return ResponseEntity.ok().body(entityModel);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "INVALID USER ID");
         } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_DESC);
         }
     }
 
@@ -69,7 +74,7 @@ public class UserController {
         List<UserResponseDto> userList = userService.findAllUsers().stream().map(userMapper::toDto).toList();
         CollectionModel<UserResponseDto> collectionModel = CollectionModel.of(userList,
                 linkTo(methodOn(UserController.class).getUsers()).withSelfRel(),
-                Link.of("/api/users/{id}", "find_user_by_id"),
+                Link.of("/api/users/{id}", FIND_USER_BY_ID_DESC),
                 linkTo(methodOn(UserController.class).createUser(UserRequestDto.buildUserDto(null, null, null))).withRel("create_new_user"));
         return ResponseEntity.ok().body(collectionModel);
     }
@@ -86,7 +91,7 @@ public class UserController {
             URI savedUserUri = URI.create("/api/users/" + savedUser.getId());
             EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(savedUser),
                     linkTo(methodOn(UserController.class).getUserById(savedUser.getId())).withSelfRel(),
-                    linkTo(methodOn(UserController.class).getUsers()).withRel("list_of_all_users"));
+                    linkTo(methodOn(UserController.class).getUsers()).withRel(LIST_OF_ALL_USERS_DESC));
             return ResponseEntity.created(savedUserUri).body(entityModel);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO CREATE NEW USER");
@@ -101,19 +106,19 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "Failed to update user, possibly due to invalid provided parameters")
     @ApiResponse(responseCode = "404", description = "Failed to update user because user with provided ID has not been found")
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<UserResponseDto>> updateUser(@Parameter(description = "Digit ID value of existing user", example = "202")
+    public ResponseEntity<EntityModel<UserResponseDto>> updateUser(@Parameter(description = ID_DESCRIPTION, example = "202")
                                                                    @PathVariable Long id, @RequestBody UserRequestDto userDto) {
         try {
             User updatedUser = userService.updateUser(id, userMapper.toEntity(userDto));
             EntityModel<UserResponseDto> entityModel = EntityModel.of(userMapper.toDto(updatedUser),
                     linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel(),
-                    Link.of("/api/users/{id}", "find_user_by_id"),
-                    linkTo(methodOn(UserController.class).getUsers()).withRel("list_of_all_users"));
+                    Link.of("/api/users/{id}", FIND_USER_BY_ID_DESC),
+                    linkTo(methodOn(UserController.class).getUsers()).withRel(LIST_OF_ALL_USERS_DESC));
             return ResponseEntity.ok(entityModel);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO UPDATE USER");
         } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_DESC);
         }
     }
 
@@ -122,14 +127,14 @@ public class UserController {
     @ApiResponse(responseCode = "400", description = "Failed to delete user by provided ID, possibly due to invalid ID")
     @ApiResponse(responseCode = "404", description = "Failed to delete user by provided ID because user with provided ID has not been found")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@Parameter(description = "Digit ID value of existing user", example = "202") @PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@Parameter(description = ID_DESCRIPTION, example = "202") @PathVariable Long id) {
         try {
             userService.deleteUser(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "FAILED TO DELETE USER");
         } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_DESC);
         }
     }
 }
