@@ -4,8 +4,8 @@
     <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>log-${bySecond}.txt</file>
-        <append>true</append>
+        <file>user-service-log.txt</file>
+        <append>false</append>
         <immediateFlush>true</immediateFlush>
         <encoder>
             <pattern>%logger{35} -%kvp- %msg%n</pattern>

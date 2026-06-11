@@ -4,11 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.EnableKafka;
 
-@SpringBootApplication(scanBasePackages = {"org.example"})
+@SpringBootApplication
 @EnableKafka
-public class AppExecutable {
-
+public class NotificationServiceAppExecutable {
     public static void main(String[] args) {
-        SpringApplication.run(AppExecutable.class, args);
+        SpringApplication.run(NotificationServiceAppExecutable.class, args);
     }
 }
